@@ -1,0 +1,65 @@
+import pandas as pd
+import numpy as np
+
+
+# Total number of samples (products) we want to create
+samples = 1000  
+
+# Define class distribution (imbalanced dataset)
+# 90% of data will be Class 0, 10% will be Class 1
+class_0_ratio = 0.9  
+
+#0 for regular ,
+#1 for premium 
+# Calculate how many samples for each class
+n_class_0 = int(samples * class_0_ratio)  # 900 samples for Class 0 
+n_class_1 = samples - n_class_0            # 100 samples for Class 1 (remaining)
+
+
+class_0 = pd.DataFrame({
+    # Generate random prices with Normal Distribution
+    # loc=0 means average price is 0 (centered at 0)
+    # scale=1 means standard deviation is 1 (most values between -1 to +1)
+    # size=n_class_0 means create 900 random numbers
+    "price": np.random.normal(loc=0, scale=1, size=n_class_0),
+    
+    # Generate random selling values with same distribution
+    # This keeps price and selling correlated for Class 0
+    "selling": np.random.normal(loc=0, scale=1, size=n_class_0),
+    
+    # Label all Class 0 samples as 0
+    # [0] * 900 creates a list with 900 zeros: [0, 0, 0, ..., 0]
+    "target": [0] * n_class_0
+})
+
+
+class_1 = pd.DataFrame({
+    # Generate random prices centered at 2 (higher than Class 0)
+    # loc=2 means average price is 2 (centered at 2)
+    # scale=1 means standard deviation is 1 (most values between 1 to 3)
+    # This creates SEPARATION between Class 0 and Class 1
+    "price": np.random.normal(loc=2, scale=1, size=n_class_1),
+    
+    # Generate random selling values with same distribution
+    # Higher selling values for premium products
+    "selling": np.random.normal(loc=2, scale=1, size=n_class_1),
+    
+    # Label all Class 1 samples as 1
+    # [1] * 100 creates a list with 100 ones: [1, 1, 1, ..., 1]
+    "target": [1] * n_class_1
+})
+
+# ============================================================================
+# WHY USE DIFFERENT MEANS (loc=0 vs loc=2)?
+# ============================================================================
+# By giving different means:
+# - Class 0 clusters around 0 (low values)
+# - Class 1 clusters around 2 (high values)
+# This creates clear separation so ML models can learn to distinguish them!
+
+# ============================================================================
+# COMBINE BOTH CLASSES INTO ONE DATASET
+# ============================================================================
+# Concatenate (stack) both DataFrames vertically
+# ignore_index=True resets index from 0 to 999
+df = pd.concat([class_0, class_1], ignore_index=True)
