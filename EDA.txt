@@ -1,2 +1,4 @@
-Whenever you see a a categorical data , try to do first  is countplot 
-sns.countplot(x="", data = df )
+1. Whenever you see a a categorical data , try to do first  is countplot 
+    sns.countplot(x="", data = df )
+
+Categorical data = which you can categorise 0 = false , 1 = true 
