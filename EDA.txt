@@ -1,4 +1,5 @@
 1. Whenever you see a a categorical data , try to do first  is countplot 
     sns.countplot(x="", data = df )
-
-Categorical data = which you can categorise 0 = false , 1 = true 
+    Categorical data = which you can categorise 0 = false , 1 = true 
+2. For Pie chart 
+df["Survived"].value_counts().plot(kind="pie",autopct= "%.2f")
