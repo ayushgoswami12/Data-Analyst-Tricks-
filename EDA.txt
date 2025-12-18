@@ -1,0 +1,2 @@
+Whenever you see a a categorical data , try to do first  is countplot 
+sns.countplot(x="", data = df )
